@@ -1,0 +1,92 @@
+//27
+int removeElement(vector<int>& nums, int val) {
+    int s = 0;
+    int i = 0;
+    for (; i< nums.size(); ++i) {
+        if(val!=nums[i]){
+            nums[s] = nums[i];
+            ++s;
+        }
+    }
+    return s;
+}
+//28
+int strStr(string haystack, string needle) {
+    if (needle.size() == 0)
+        return 0;
+    int b = haystack.find(needle);
+        return b==-1?-1:b;
+}
+
+//35 (only run code, when i press submit it brings runtime error:( )
+int searchInsert(vector<int> nums, int target) {
+
+    int start = 0;
+    int end = nums.size();
+    int mid;
+    while (start <= end && (start+end)/2!=nums.size()) {
+        mid = (start + end) / 2;
+        if (nums[mid] == target) {
+            return mid;
+        }
+        if (nums[mid] > target) {
+            end = mid - 1;
+        }
+        else if (nums[mid] < target) {
+            start = mid + 1;
+        }
+    }
+    if (end == nums.size()) {
+        return end;
+    }
+    if (nums[end] > target) {
+        return end;
+    }
+    return end+1;
+
+}
+
+// 53
+int maxSubArray(vector<int>& nums) {
+        int sum = INT32_MIN;
+        for(int i = 0; i<nums.size();++i){
+            int allsum=0;
+            for(int j = i; j<nums.size();++j){
+                allsum+=nums[j];
+                if(allsum>sum)
+                    sum = allsum;
+            }
+            allsum = 0;
+        }
+        return sum;
+    }
+    
+// 5 same as 35
+string longestPalindrome(string str) {
+    int n = str.size();
+    int m_s = 0;
+    int m_e = 0;
+    for (int i = 0; i < n; ++i) {
+        int e = n - 1;
+        int s = i;
+        int k = n - 1;
+        int j = i;
+        while (j<n && k >= j) {
+            if (str[j] != str[k]) {
+                e = k;
+                j = i;
+            }
+            else {
+                ++j;
+                --k;
+            }
+            
+        }
+        if (e - s > m_e - m_s) {
+            m_s = i;
+            m_e = e;
+        }
+    }
+        string tmp = str.substr(m_s, m_e-m_s+1);
+    return tmp;
+}
