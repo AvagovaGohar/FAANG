@@ -1,0 +1,177 @@
+// 73
+class Solution {
+public:
+    void setZeroes(vector<vector<int>>& matrix) {
+    vector<int> x_;
+    vector<int> y_;
+    int n = matrix.size();
+    int m = matrix[0].size();
+    for (int i = 0; i < n; ++i) {
+        for (int j = 0; j < m; ++j) {
+            if (matrix[i][j] == 0) {
+                x_.push_back(i);
+                y_.push_back(j);
+            }
+        }
+    }
+
+    for (int j = 0; j < x_.size(); ++j) {
+        for (int i = 0; i < m; ++i) {
+            matrix[x_[j]][i] = 0;
+        }
+        for (int i = 0; i < n; ++i) {
+            std::cout << matrix[i][y_[j]] << ' ';
+            matrix[i][y_[j]] = 0;
+        }
+    }
+}
+};
+
+// 83
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* deleteDuplicates(ListNode* head) {
+        if(head==nullptr)
+            return nullptr;
+        ListNode* res = new ListNode;
+        ListNode* start = res;
+        res->val = head->val;
+        ListNode* prev = head;
+        head = head->next;
+        while(head!=nullptr){
+            if(head->val!=prev->val){
+                res->next = new ListNode;
+                res = res->next;
+                res->val = head->val;
+                prev = head;
+            }
+            head=head->next;
+        }
+        return start;
+    }
+};
+
+// 88
+class Solution {
+public:
+    void merge(vector<int>& nums1, int m, vector<int>& nums2, int n) {
+        vector<int>tmp(nums1.begin(),nums1.begin()+m);
+        int i = 0;
+        int j = 0;        
+        int k = 0;
+
+        while(i!=m && j!=n){
+            if(tmp[i]<=nums2[j]){
+                nums1[k] = tmp[i];
+                ++i;
+            }else{
+                nums1[k] = nums2[j];
+                ++j;
+            }
+            ++k;
+        }
+        while(i!=m){
+            nums1[k] = tmp[i];
+            ++i;
+            ++k;
+        }
+        while(j!=n){
+            nums1[k]=nums2[j];
+            ++j;
+            ++k;
+        }
+    }
+};
+
+// 94
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    void traversal(TreeNode* node,vector<int>& vec){
+        if(node==nullptr)
+            return;
+        traversal(node->left,vec);
+        vec.push_back(node->val);
+        traversal(node->right,vec);
+    }
+    vector<int> inorderTraversal(TreeNode* root) {
+       vector<int> res;
+        traversal(root,res);
+        return res;
+    }
+};
+
+// 8
+
+class Solution {
+public:
+    int myAtoi(string s) {
+        bool plus = false;
+        bool min = false;
+        
+        int num = 0;
+        
+        for(int i = 0; i<s.size();++i){
+            if(s[i] == '-'){
+                if(i-1>=0 && s[i-1]=='0'){
+                    return 0;
+                }
+                if(!plus)
+                    min = true;
+                else
+                    return 0;
+            }
+            else if(s[i]=='+'){
+                if(i-1>=0 && s[i-1]=='0'){
+                    return 0;
+                }
+                if(!min)
+                    plus = true;
+                else
+                    return 0;
+            }
+            else if(s[i] == ' '){
+                if(num!=0 || min || plus)
+                    return num;
+            }
+            else if(s[i]<59 && s[i]>47 ){
+                
+                if(num>=INT32_MAX/10){
+                    if(min){
+                        return INT32_MIN;
+                    }
+                    return INT32_MAX;
+                }
+                num = num*10+(int)s[i]-48;
+            }else{
+                if(s[i] == '.')
+                    return num;
+                break;
+            }
+        }
+        if(min){
+            return num*(-1);
+        }
+        return num;
+    }
+};
