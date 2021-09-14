@@ -1,0 +1,108 @@
+// 100
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    
+    bool isSameTree(TreeNode* p, TreeNode* q) {
+        if(p==nullptr && q == nullptr){
+            return true;
+        }else if(p==nullptr || q == nullptr){
+            return false;
+        }
+        bool t1 = isSameTree(p->left,q->left);
+        bool t2 = isSameTree(p->right,q->right);
+        if(!t1 || !t2 || p->val!=q->val){
+            return false;
+        }
+        return true;
+    }
+};
+
+//101
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    bool sim(TreeNode* a, TreeNode* b){
+        if(a == nullptr && b == nullptr)
+            return true;
+        else if(a == nullptr || b == nullptr)
+            return false;
+        bool x = sim(a->left,b->right);
+        bool y = sim(a->right,b->left);
+        if(!x || !y || a->val != b-> val){
+            return false;
+        }
+        return true;
+        
+    }
+    
+    bool isSymmetric(TreeNode* root) {
+        return sim(root->left,root->right);
+    }
+};
+
+// 102
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    vector<vector<int>> levelOrder(TreeNode* root) {
+        if(root == nullptr)
+            return vector<vector<int>>();
+        bool t = true;
+        vector<vector<int>> vec;
+        vector<TreeNode*> tmp = {root};
+        int count = 0;
+        
+        while(tmp.size() != 0){
+            
+            vec.push_back(vector<int>());
+            int size = tmp.size();
+            for(int i = 0; i < size; ++i){
+                vec[count].push_back(tmp[i]->val);
+                if(tmp[i]->left!=nullptr){
+                    tmp.push_back(tmp[i]->left);
+                }
+                if(tmp[i]->right!=nullptr){
+                    tmp.push_back(tmp[i]->right);
+                }
+                
+            }
+            tmp.erase(tmp.begin(),tmp.begin()+size);
+            ++count;
+        }
+        return vec;
+    }
+};
+
+//108
